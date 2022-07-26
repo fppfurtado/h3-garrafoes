@@ -2,7 +2,8 @@
 // import HelloWorld from './components/HelloWorld.vue'
 // import TheWelcome from './components/TheWelcome.vue'
 
-import Login from './components/Login.vue';
+//import Login from './components/Login.vue';
+import Romaneio from './components/Romaneio.vue';
 
 </script>
 
@@ -18,7 +19,7 @@ import Login from './components/Login.vue';
   <main>
     <TheWelcome />
   </main> -->
-  <Login />
+  <Romaneio />
 </template>
 
 <!-- <style scoped>
