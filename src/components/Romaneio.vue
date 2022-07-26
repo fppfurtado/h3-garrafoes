@@ -49,7 +49,7 @@
     <input id="data" name="data" type="datetime-local" v-model="data" /><br />
 
     <label for="placa">PLACA VEÍCULO:</label>
-    <select id="placa" name="placa">
+    <select id="placa" name="placa" v-model="placa">
     <option id="hyd" value="HYD-2A18">HYD-2A18</option>
     <option id="jvw" value="JVW-7464">JVW-7464</option>
     </select> <br />
