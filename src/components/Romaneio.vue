@@ -27,7 +27,7 @@
 
             var romaneio = querySnapshot.docs[0].data();
 
-            this.data = romaneio.data;
+            this.data = romaneio.data.toDate().toISOString().replace('Z','');
             this.placa = romaneio.placa;
             this.bom_para_envase = romaneio.bom_para_envase;
             this.retorno_vazio = romaneio.retorno_vazio;
