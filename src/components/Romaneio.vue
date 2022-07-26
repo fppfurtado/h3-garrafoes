@@ -13,7 +13,8 @@
                 bom_para_envase:'',
                 retorno_vazio:'',
                 entrada_cheio:'',
-                troca_perda:''
+                troca_perda:'',
+                cheio_a_faturar:''
             }
         },
         methods: {
@@ -33,6 +34,7 @@
             this.retorno_vazio = romaneio.retorno_vazio;
             this.entrada_cheio = romaneio.entrada_cheio;
             this.troca_perda = romaneio.troca_perda;
+            this.cheio_a_faturar = romaneio.cheio_a_faturar;
 
         }
     }
@@ -67,7 +69,7 @@
     <input id="itemH" name="H" type="number" min="0" v-model="troca_perda"/><br />
 
     <label for="itemI">(I) CHEIO (À FATURAR):</label>
-    <input id="itemI" name="I" type="number" min="0" disabled /><br />
+    <input id="itemI" name="I" type="number" min="0" v-model="cheio_a_faturar" /><br />
 
     <button type="button" onclick="gravarRomaneio()">gravar</button>
     <button type="button" onclick="excluirRomaneio()">excluir</button>
