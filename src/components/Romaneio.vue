@@ -36,6 +36,11 @@
             this.troca_perda = romaneio.troca_perda;
             this.cheio_a_faturar = romaneio.cheio_a_faturar;
 
+        },
+        computed: {
+            getTotalGeral() {
+                return this.cheio_a_faturar + this.troca_perda + this.entrada_cheio;
+            }
         }
     }
 
@@ -70,6 +75,9 @@
 
     <label for="itemI">(I) CHEIO (À FATURAR):</label>
     <input id="itemI" name="I" type="number" min="0" v-model="cheio_a_faturar" /><br />
+
+    <label for="itemJ">(J) TOTAL GERAL:</label>
+    <input id="itemJ" name="J" type="number" min="0" v-model="getTotalGeral" disabled /><br />
 
     <button type="button" onclick="gravarRomaneio()">gravar</button>
     <button type="button" onclick="excluirRomaneio()">excluir</button>
