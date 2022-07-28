@@ -8,39 +8,53 @@
     export default {
         data() {
             return {
-                data:'',
-                placa:'',
-                bom_para_envase:'',
-                retorno_vazio:'',
-                entrada_cheio:'',
-                troca_perda:'',
-                cheio_a_faturar:''
+                romaneio: {
+                    data:'',
+                    placa:'',
+                    bom_para_envase:'',
+                    retorno_vazio:'',
+                    entrada_cheio:'',
+                    troca_perda:'',
+                    cheio_a_faturar:''
+                },
+                combo_placa: {
+                    options: []
+                }
             }
         },
         methods: {
-
-        },
-        async mounted() {
-
-            const querySnapshot = await getDocs(collection(db, "romaneio"));
-
-            console.log(querySnapshot.docs[0].data());
-
-            var romaneio = querySnapshot.docs[0].data();
-
-            this.data = romaneio.data.toDate().toISOString().replace('Z','');
-            this.placa = romaneio.placa;
-            this.bom_para_envase = romaneio.bom_para_envase;
-            this.retorno_vazio = romaneio.retorno_vazio;
-            this.entrada_cheio = romaneio.entrada_cheio;
-            this.troca_perda = romaneio.troca_perda;
-            this.cheio_a_faturar = romaneio.cheio_a_faturar;
-
+            carregarRomaneio(romaneio) {
+                this.romaneio.data = romaneio.data.toDate().toISOString().replace('Z','');
+                this.romaneio.placa = romaneio.placa;
+                this.romaneio.bom_para_envase = romaneio.bom_para_envase;
+                this.romaneio.retorno_vazio = romaneio.retorno_vazio;
+                this.romaneio.entrada_cheio = romaneio.entrada_cheio;
+                this.romaneio.troca_perda = romaneio.troca_perda;
+                this.romaneio.cheio_a_faturar = romaneio.cheio_a_faturar;
+            },
+            carregarComboPlacas(placas) {
+                placas.forEach((placa) => {
+                    this.combo_placa.options.push({
+                        value: placa.data().nome,
+                        text: placa.data().nome
+                    });
+                })
+            }
         },
         computed: {
             getTotalGeral() {
-                return this.cheio_a_faturar + this.troca_perda + this.entrada_cheio;
+                return this.romaneio.cheio_a_faturar + this.romaneio.troca_perda + this.romaneio.entrada_cheio;
             }
+        },
+        async mounted() {
+
+            const queryEstoques = await getDocs(collection(db, "estoques"));
+            const queryRomaneios = await getDocs(collection(db, "romaneio"));
+            
+            //console.log(querySnapshot.docs[0].data());
+            this.carregarComboPlacas(queryEstoques.docs);
+            this.carregarRomaneio(queryRomaneios.docs[0].data());
+
         }
     }
 
@@ -53,28 +67,29 @@
     <input id="id" type="hidden" />
     
     <label for="data">DATA/HORA:</label>
-    <input id="data" name="data" type="datetime-local" v-model="data" /><br />
+    <input id="data" name="data" type="datetime-local" v-model="romaneio.data" /><br />
 
     <label for="placa">PLACA VEÍCULO:</label>
-    <select id="placa" name="placa" v-model="placa">
-    <option id="hyd" value="HYD-2A18">HYD-2A18</option>
-    <option id="jvw" value="JVW-7464">JVW-7464</option>
+    <select id="placa" name="placa" v-model="romaneio.placa">
+        <option v-for="option in combo_placa.options" :value="option.value">
+            {{ option.text }}
+        </option>
     </select> <br />
 
     <label for="itemA">(A) BOM PARA ENVASE:</label>
-    <input id="itemA" name="A" type="number" min="0" v-model="bom_para_envase" /><br />
+    <input id="itemA" name="A" type="number" min="0" v-model="romaneio.bom_para_envase" /><br />
 
     <label for="itemB">(B) RETORNO VAZIO:</label>
-    <input id="itemB" name="B" type="number" min="0" v-model="retorno_vazio" /><br />
+    <input id="itemB" name="B" type="number" min="0" v-model="romaneio.retorno_vazio" /><br />
 
     <label for="itemC">(C) ENTRADA CHEIO:</label>
-    <input id="itemC" name="C" type="number" min="0" v-model="entrada_cheio" /><br />
+    <input id="itemC" name="C" type="number" min="0" v-model="romaneio.entrada_cheio" /><br />
 
     <label for="itemH">(H) TROCA (PERDA):</label>
-    <input id="itemH" name="H" type="number" min="0" v-model="troca_perda"/><br />
+    <input id="itemH" name="H" type="number" min="0" v-model="romaneio.troca_perda"/><br />
 
     <label for="itemI">(I) CHEIO (À FATURAR):</label>
-    <input id="itemI" name="I" type="number" min="0" v-model="cheio_a_faturar" /><br />
+    <input id="itemI" name="I" type="number" min="0" v-model="romaneio.cheio_a_faturar" /><br />
 
     <label for="itemJ">(J) TOTAL GERAL:</label>
     <input id="itemJ" name="J" type="number" min="0" v-model="getTotalGeral" disabled /><br />
